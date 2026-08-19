@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title> Gigi — Conteúdo Exclusivo</title>
+  
+  <!-- FONTES -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════
+       MODAL DE VERIFICAÇÃO DE IDADE
+  ══════════════════════════════════════════ -->
+  <div id="age-modal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-lock-icon">🔞</div>
+      <h1 class="modal-brand">Giovana Alves</h1>
+      <p class="modal-subtitle">Conteúdo exclusivo para adultos</p>
+      <p class="modal-desc">
+        Este site contém conteúdo adulto destinado exclusivamente a maiores de
+        <strong>18 anos</strong>. Ao continuar, você confirma que possui a idade mínima.
+      </p>
+      <button id="age-confirm-btn" class="btn-age-confirm">
+        Tenho mais de 18 anos — Entrar
+      </button>
+      <p class="modal-warning">⚠️ Menores de 18 anos têm acesso proibido.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CONTEÚDO PRINCIPAL (ESTILO V5 PLATINUM)
+  ══════════════════════════════════════════ -->
+  <main id="main-content" class="hidden">
+
+    <!-- ── CABEÇALHO / PERFIL ── -->
+    <header class="profile-header">
+      <div class="banner-container">
+        <!-- SUBSTITUA ESTA IMAGEM PELO SEU BANNER (BANNER.JPG) -->
+        <!-- 🚩 [PERSONALIZAÇÃO] ALTERE O BANNER ABAIXO -->
+        <div class="banner-placeholder">
+            <img src="assets/foto-banner.jpeg" alt="Banner do Perfil" class="banner-image" onerror="this.style.display='none'; this.parentElement.classList.add('no-img');">
+            <div class="banner-overlay-text"></div>
+        </div>
+        <!-- 🚩 FIM DO BANNER -->
+      </div>
+      
+      <div class="profile-info">
+        <div class="avatar-wrapper">
+          <!-- 🚩 [PERSONALIZAÇÃO] ALTERE A FOTO DE PERFIL ABAIXO -->
+          <div class="profile-glow"></div>
+          <img src="assets/foto-perfil.jpeg" alt="Foto de Perfil" class="profile-pic" />
+          <!-- 🚩 FIM DA FOTO DE PERFIL -->
+        </div>
+        
+        <div class="profile-meta">
+          <h2 class="profile-name">Giovana Alves <span class="verified-badge">✔</span></h2>
+          <p class="profile-handle">@giovanaAlves_oficial</p>
+          
+          <div class="stats-row">
+            <div class="stat-item"><span class="stat-number">847</span><span class="stat-label">Posts</span></div>
+            <div class="stat-item"><span class="stat-number">124K</span><span class="stat-label">Seguidores</span></div>
+            <div class="stat-item"><span class="stat-number">2.1M</span><span class="stat-label">Curtidas</span></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ── BIOGRAFIA ── -->
+    <section class="bio-section">
+      <div class="container">
+        <p class="bio-text">
+          Prazer amorr 💕, me chamo <mark>Gigi</mark> e tenho <mark>23 aninhos!!</mark> Aqui vc vai ver <mark>conteúdos meus exclusivos</mark>, tudo feito com carinho pra vc que gosta de algo mais picante, Tô liberando um <mark>packzinho de sexo e esguichadas especiais</mark> , e o melhor: as mídias vão ser <mark>atualizadas diariamente</mark> por lá, sempre coisa nova para olhar Se vc tá afim de acompanhar tudo de pertinho, chegou no lugar certo 💗<br><br>
+          <mark>Correee</mark> porque eu vou deixar somente <mark>60 unidades disponíveis por 0 reais</mark> pra vocês!! bjssss 😘.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── OFERTA & VÍDEOS ── -->
+    <section class="offer-section">
+      <div class="container">
+        <div class="offer-card">
+          <div class="offer-badge">🔥 OFERTA COM TEMPO LIMITADO</div>
+          <p class="offer-scarcity">⚡ Apenas <strong id="units-left">16</strong> unidades disponíveis!</p>
+          <div class="countdown-wrapper">
+            <div class="countdown-block"><span id="cd-hours" class="cd-number">00</span><span class="cd-label">Horas</span></div>
+            <span class="cd-sep">:</span>
+            <div class="countdown-block"><span id="cd-minutes" class="cd-number">00</span><span class="cd-label">Min</span></div>
+            <span class="cd-sep">:</span>
+            <div class="countdown-block"><span id="cd-seconds" class="cd-number">00</span><span class="cd-label">Seg</span></div>
+          </div>
+        </div>
+
+        <div class="videos-grid">
+          <!-- 🚩 [PERSONALIZAÇÃO] ALTERE O VÍDEO 1 ABAIXO -->
+          <div class="video-item">
+            <video src="assets/video1.mp4" controls muted loop playsinline class="video-player"></video>
+            <div class="video-tag">PREVIEW 1 🔞</div>
+          </div>
+          <!-- 🚩 FIM DO VÍDEO 1 -->
+
+          <!-- 🚩 [PERSONALIZAÇÃO] ALTERE O VÍDEO 2 ABAIXO -->
+          <div class="video-item">
+            <video src="assets/video2.mp4" controls muted loop playsinline class="video-player"></video>
+            <div class="video-tag">PREVIEW 2 🔞</div>
+          </div>
+          <!-- 🚩 FIM DO VÍDEO 2 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PLANOS ── -->
+    <section class="plans-section">
+      <div class="container">
+        <h3 class="section-title">Escolha seu plano</h3>
+        <div class="plans-grid">
+          <div class="plan-card plan-monthly">
+            <div class="plan-icon">💳</div>
+            <h4 class="plan-name">Acesso Mensal</h4>
+            <div class="plan-price"><span class="price-currency">R$</span><span class="price-value">0</span><span class="price-cents">,00</span></div>
+            <ul class="plan-features"><li>✔ Fotos e vídeos</li><li>✔ Atualizações</li><li>✔ Contato pessoal</li></ul>
+            <a href="checkout.html" class="btn-plan btn-orange">Assinar Agora</a>
+          </div>
+          <div class="plan-card plan-quarterly best-value">
+            <div class="best-badge">MELHOR VALOR</div>
+            <div class="plan-icon">👑</div>
+            <h4 class="plan-name">Acesso Trimestral</h4>
+            <div class="plan-price"><span class="price-currency">R$</span><span class="price-value">1</span><span class="price-cents">,90</span></div>
+            <ul class="plan-features"><li>✔ Fotos e vídeos</li><li>✔ Atualizações</li><li>✔ Contato pessoal</li><li>✔ VIP bônus</li></ul>
+            <a href="checkout.html" class="btn-plan btn-pink">Assinar Agora</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DEPOIMENTOS (GRADE ESTÁTICA - 8 ITENS) ── -->
+    <section class="testimonials-section">
+      <div class="container">
+        <h3 class="section-title">O que estão dizendo</h3>
+        <div class="testimonials-grid-platinum">
+          <!-- 1 -->
+          <div class="testi-card">
+            <div class="testi-header">
+              <div class="testi-avatar">P</div>
+              <div><p class="testi-name">Pedro</p><p class="testi-age">28 anos</p></div>
+              <div class="testi-stars">★★★★★</div>
+            </div>
+            <p class="testi-comment">"Melhor investimento que fiz! Conteúdo incrível e ela responde rápido."</p>
+          </div>
+          <!-- 2 -->
+          <div class="testi-card">
+            <div class="testi-header">
+              <div class="testi-avatar">R</div>
+              <div><p class="testi-name">Rafael</p><p class="testi-age">32 anos</p></div>
+              <div class="testi-stars">★★★★★</div>
+            </div>
+            <p class="testi-comment">"Conteúdo exclusivo de verdade! Atualiza todo dia e o atendimento é 10."</p>
+          </div>
+          <!-- 3 -->
+          <div class="testi-card">
+            <div class="testi-header">
+              <div class="testi-avatar">L</div>
+              <div><p class="testi-name">Lucas</p><p class="testi-age">25 anos</p></div>
+              <div class="testi-stars">★★★★★</div>
+            </div>
+            <p class="testi-comment">"As fotos são de outro nível! Gigi é super dedicada aos fãs."</p>
+          </div>
+          <!-- 4 -->
+          <div class="testi-card">
+            <div class="testi-header">
+              <div class="testi-avatar">M</div>
+              <div><p class="testi-name">ASAFAESDAGFASF</p><p class="testi-age">30 anos</p></div>
+              <div class="testi-stars">★★★★★</div>
+            </div>
+            <p class="testi-comment">"Assino o trimestral e vale cada centavo. Melhor pack do mercado!"</p>
+          </div>
+          <!-- 5 -->
+          <div class="testi-card">
+            <div class="testi-header">
+              <div class="testi-avatar">G</div>
+              <div><p class="testi-name">Gabriel</p><p class="testi-age">26 anos</p></div>
+              <div class="testi-stars">★★★★★</div>
+            </div>
+            <p class="testi-comment">"Simplesmente viciado! O conteúdo é muito picante e de alta qualidade."</p>
+          </div>
+          <!-- 6 -->
+          <div class="testi-card">
+            <div class="testi-header">
+              <div class="testi-avatar">F</div>
+              <div><p class="testi-name">Felipe</p><p class="testi-age">29 anos</p></div>
+              <div class="testi-stars">★★★★★</div>
+            </div>
+            <p class="testi-comment">"O acesso VIP é diferenciado. As mídias são atualizadas diariamente."</p>
+          </div>
+          <!-- 7 -->
+          <div class="testi-card">
+            <div class="testi-header">
+              <div class="testi-avatar">B</div>
+              <div><p class="testi-name">Bruno</p><p class="testi-age">34 anos</p></div>
+              <div class="testi-stars">★★★★★</div>
+            </div>
+            <p class="testi-comment">"Surpreendente! A Gigi é uma delícia e muito atenciosa com a gente."</p>
+          </div>
+          <!-- 8 -->
+          <div class="testi-card">
+            <div class="testi-header">
+              <div class="testi-avatar">T</div>
+              <div><p class="testi-name">Thiago</p><p class="testi-age">27 anos</p></div>
+              <div class="testi-stars">★★★★★</div>
+            </div>
+            <p class="testi-comment">"Tudo feito com muito carinho. O melhor conteúdo adulto que já vi."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── RODAPÉ ── -->
+    <footer class="site-footer">
+      <div class="container footer-content">
+        <p class="footer-text">© 2025 Giovana Neves — Todos os direitos reservados.</p>
+        <div class="manus-badge">⚡ Made with <strong>Manus</strong></div>
+      </div>
+    </footer>
+  </main>
+
+  <div id="floating-notification" class="floating-notif hidden">
+    <span class="notif-icon">🔔</span>
+    <span id="notif-text" class="notif-text"></span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
